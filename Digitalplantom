@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NovaForge — Websites & Apps on Order</title>
+  <meta name="description" content="Order custom websites, apps, and UI/UX design. Talk to Zack Bot for quick support, place orders, and send deposits securely." />
+  <style>
+    :root{
+      --bg-dark:#050b1a;
+      --bg-darker:#020712;
+      --blue:#2563eb;
+      --blue-2:#0ea5e9;
+      --cyan:#22d3ee;
+      --muted:#8aa0c6;
+      --text:#e6f1ff;
+      --success:#22c55e;
+      --warning:#f59e0b;
+      --danger:#ef4444;
+      --card:#0b1530cc;
+      --border:#1e2a57;
+    }
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";color:var(--text);background: radial-gradient(1200px 800px at 80% -10%, #0b1b3f 0%, var(--bg-dark) 45%, var(--bg-darker) 100%);min-height:100vh;}
+    a{color:var(--cyan);text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1200px;margin:0 auto;padding:24px}
+
+    /* Starfield */
+    .stars, .stars2, .stars3{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;background-repeat:repeat;background-position:0 0;z-index:-1}
+    .stars{background-image: radial-gradient(2px 2px at 20px 30px,rgba(255,255,255,.9) 50%,transparent 51%),radial-gradient(1px 1px at 100px 80px,rgba(255,255,255,.7) 50%,transparent 51%),radial-gradient(1px 1px at 200px 120px,rgba(255,255,255,.6) 50%,transparent 51%);animation: drift 120s linear infinite}
+    .stars2{background-image: radial-gradient(1px 1px at 50px 60px,rgba(255,255,255,.5) 50%,transparent 51%),radial-gradient(1px 1px at 150px 40px,rgba(255,255,255,.4) 50%,transparent 51%),radial-gradient(1px 1px at 250px 200px,rgba(255,255,255,.4) 50%,transparent 51%);animation: drift 200s linear infinite}
+    .stars3{background-image: radial-gradient(1px 1px at 30px 150px,rgba(255,255,255,.4) 50%,transparent 51%),radial-gradient(1px 1px at 220px 90px,rgba(255,255,255,.3) 50%,transparent 51%),radial-gradient(1px 1px at 340px 230px,rgba(255,255,255,.3) 50%,transparent 51%);animation: drift 300s linear infinite}
+    @keyframes drift{from{background-position:0 0}to{background-position: -10000px 5000px}}
+
+    /* Header */
+    header{position:sticky;top:0;background:linear-gradient(180deg, rgba(5,11,26,0.85), rgba(5,11,26,0.4));backdrop-filter: blur(8px);border-bottom:1px solid var(--border);z-index:50}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.5px}
+    .logo{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 200deg at 50% 50%, #0ea5e9, #2563eb, #0ea5e9);box-shadow:0 0 18px rgba(34,211,238,.35)}
+    .nav a{opacity:.9}
+    .nav-links{display:flex;gap:18px;align-items:center}
+    .cta{padding:10px 16px;border:1px solid var(--cyan);border-radius:12px;background:linear-gradient(180deg, rgba(34,211,238,.1), rgba(14,165,233,.05));font-weight:600}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;padding:64px 0}
+    .tag{display:inline-flex;gap:8px;align-items:center;background:rgba(37,99,235,.15);border:1px solid var(--border);padding:6px 10px;border-radius:999px;color:#b9d4ff}
+    h1{font-size:clamp(28px, 5vw, 54px);line-height:1.05;margin:14px 0}
+    .sub{max-width:60ch;color:#c8d6ff}
+    .hero-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:18px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+    .bullet{display:flex;align-items:center;gap:10px;margin:8px 0;color:#cfe2ff}
+    .check{width:18px;height:18px;border-radius:6px;background:linear-gradient(180deg, #22d3ee, #2563eb);}
+
+    /* Sections */
+    section{padding:40px 0}
+    h2{font-size:clamp(22px, 3vw, 34px);margin:0 0 10px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px}
+    .muted{color:var(--muted)}
+
+    /* Pricing */
+    .price{font-size:32px;font-weight:800}
+
+    /* Forms */
+    label{display:block;margin:12px 0 6px}
+    input, select, textarea{width:100%;padding:12px 14px;background:rgba(11,21,48,.55);border:1px solid var(--border);border-radius:12px;color:var(--text)}
+    textarea{min-height:120px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:none;border-radius:12px;background:linear-gradient(180deg, #2563eb, #0ea5e9);color:white;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(14,165,233,.25)}
+    .btn.secondary{background:transparent;border:1px solid var(--blue-2);color:var(--text)}
+    .note{font-size:12px;color:#b9c9ff}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);border-radius:999px;background:rgba(14,165,233,.08);}
+
+    /* Chatbot */
+    .chat-launcher{position:fixed;right:18px;bottom:18px;z-index:60}
+    .chatbox{position:fixed;right:18px;bottom:86px;width:350px;max-width:90vw;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.5);display:none;flex-direction:column;overflow:hidden}
+    .chatbox header{position:relative;top:0;background:linear-gradient(180deg, rgba(14,165,233,.25), rgba(5,11,26,.6));border-bottom:1px solid var(--border)}
+    .chat-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px}
+    .chat-header .id{display:flex;align-items:center;gap:10px}
+    .bot-avatar{width:34px;height:34px;border-radius:10px;background:radial-gradient(circle at 30% 30%, #22d3ee, #2563eb);box-shadow:0 0 14px rgba(34,211,238,.3)}
+    .chat-log{padding:12px;height:320px;overflow:auto;display:flex;flex-direction:column;gap:10px}
+    .msg{display:flex;gap:10px;align-items:flex-start}
+    .msg .bubble{padding:10px 12px;border-radius:12px;max-width:85%}
+    .bot .bubble{background:rgba(14,165,233,.12);border:1px solid var(--border)}
+    .user{justify-content:flex-end}
+    .user .bubble{background:rgba(37,99,235,.35);border:1px solid var(--border)}
+    .chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
+    .chat-input input{flex:1}
+    .tiny{font-size:11px;color:#b6c6ff}
+    .actions{display:flex;gap:8px;margin-top:6px}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border);background:rgba(2,7,18,.6)}
+
+    /* Responsive */
+    @media (max-width: 900px){.hero{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="stars"></div><div class="stars2"></div><div class="stars3"></div>
+  
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo"></div> <span>NovaForge Studio</span></div>
+      <nav class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#order">Order</a>
+        <a href="#deposit">Deposit</a>
+        <a href="#faq">FAQ</a>
+        <a class="cta" href="#chat">Chat with Zack Bot</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="tag">🚀 Professional • Blue Galaxy Theme</span>
+        <h1>Order Custom <span style="color:#7dd3fc">Websites</span>, <span style="color:#93c5fd">Apps</span> & UI/UX Design</h1>
+        <p class="sub">From idea to launch—place an order, chat with <strong>Zack Bot</strong> for instant answers, and we'll build your product. If the bot can't resolve your issue, you'll be routed to WhatsApp support.</p>
+        <div class="hero-card">
+          <div class="bullet"><span class="check"></span> Full‑stack websites (Next.js, WordPress, Shopify)</div>
+          <div class="bullet"><span class="check"></span> Mobile apps (iOS/Android, Flutter/React Native)</div>
+          <div class="bullet"><span class="check"></span> UI/UX & brand systems</div>
+          <div class="bullet"><span class="check"></span> Priority support & revisions policy</div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Quick Quote</h2>
+        <p class="muted">Get a rough estimate in seconds.</p>
+        <div class="row">
+          <div>
+            <label>Project Type</label>
+            <select id="qq-type">
+              <option>Website</option>
+              <option>Mobile App</option>
+              <option>Web App / SaaS</option>
+              <option>UI/UX Design Only</option>
+            </select>
+          </div>
+          <div>
+            <label>Complexity</label>
+            <select id="qq-level">
+              <option value="1">Basic</option>
+              <option value="2">Standard</option>
+              <option value="3">Advanced</option>
+            </select>
+          </div>
+        </div>
+        <label>Deadline (weeks)</label>
+        <input id="qq-time" type="number" min="1" value="4" />
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+          <span class="muted">Estimated</span>
+          <span class="price" id="qq-price">$1,800</span>
+        </div>
+        <button class="btn" onclick="calcQuote()">Recalculate</button>
+        <p class="note">* This is a ballpark estimate. Final pricing will be confirmed after requirements.</p>
+      </div>
+    </section>
+
+    <section id="services">
+      <h2>Services</h2>
+      <p class="muted">Everything you need to launch and grow.</p>
+      <div class="grid">
+        <div class="card"><h3>Website Development</h3><p>Business sites, landing pages, e‑commerce, blogs, portals.</p><div class="badge">SEO‑ready</div> <div class="badge">Fast & secure</div></div>
+        <div class="card"><h3>Mobile Apps</h3><p>iOS & Android apps with native performance using Flutter/React Native.</p><div class="badge">App Store & Play publishing</div></div>
+        <div class="card"><h3>Web Apps / SaaS</h3><p>Authentication, dashboards, subscriptions, payments, admin.</p><div class="badge">Scalable cloud</div></div>
+        <div class="card"><h3>UI/UX & Brand</h3><p>Wireframes, design systems, prototypes, and brand kits.</p><div class="badge">Figma handoff</div></div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2>Pricing Tiers</h2>
+      <div class="grid">
+        <div class="card"><h3>Starter</h3><div class="price">$799+</div><p class="muted">Landing page or simple app screen set.</p><ul><li>1–3 pages/screens</li><li>1 revision</li><li>Basic analytics</li></ul></div>
+        <div class="card"><h3>Growth</h3><div class="price">$2,499+</div><p class="muted">SMB website or MVP app.</p><ul><li>Up to 10 pages/screens</li><li>3 revisions</li><li>CMS / auth</li></ul></div>
+        <div class="card"><h3>Pro</h3><div class="price">$6,000+</div><p class="muted">Advanced e‑commerce or SaaS.</p><ul><li>Unlimited pages/screens</li><li>Priority support</li><li>Integrations</li></ul></div>
+      </div>
+      <p class="note">Prices are indicative—final SOW will define scope & deliverables.</p>
+    </section>
+
+    <section id="order">
+      <h2>Place an Order</h2>
+      <p class="muted">Submit your request. We’ll review and confirm details by email/WhatsApp.</p>
+      <form id="orderForm" class="card" onsubmit="submitOrder(event)">
+        <div class="row">
+          <div>
+            <label>Full Name</label>
+            <input required name="name" placeholder="Your name" />
+          </div>
+          <div>
+            <label>Email</label>
+            <input required type="email" name="email" placeholder="you@example.com" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>WhatsApp (with country code)</label>
+            <input name="whatsapp" placeholder="e.g., +977XXXXXXXXXX" />
+          </div>
+          <div>
+            <label>Project Type</label>
+            <select name="type">
+              <option>Website</option>
+              <option>Mobile App</option>
+              <option>Web App / SaaS</option>
+              <option>UI/UX Design Only</option>
+            </select>
+          </div>
+        </div>
+        <label>Budget (USD)</label>
+        <input type="number" name="budget" min="100" step="50" placeholder="Your target budget" />
+        <label>Project Summary</label>
+        <textarea required name="summary" placeholder="Describe features, pages, users, timelines... "></textarea>
+        <div class="row">
+          <div>
+            <label>Preferred Start Date</label>
+            <input type="date" name="start" />
+          </div>
+          <div>
+            <label>Deadline (optional)</label>
+            <input type="date" name="deadline" />
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px">
+          <label style="margin:0">Need NDA?</label>
+          <select name="nda" style="max-width:200px">
+            <option value="Yes">Yes</option>
+            <option value="No" selected>No</option>
+          </select>
+          <span class="badge">We reply within 24 hours*</span>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:14px">
+          <button class="btn" type="submit">Submit Order</button>
+          <button class="btn secondary" type="button" onclick="saveDraft()">Save Draft</button>
+        </div>
+        <p class="note">* Demo only. Hook up the endpoint in <code>submitOrder()</code> for production (email/DB).</p>
+      </form>
+    </section>
+
+    <section id="deposit">
+      <h2>Deposit / Advance</h2>
+      <p class="muted">Secure your slot with a small advance. Choose a method and submit proof. (Demo UI — integrate your gateway.)</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Choose Method</h3>
+          <div class="row">
+            <select id="pay-method">
+              <option value="card">Card</option>
+              <option value="bank">Bank Transfer</option>
+              <option value="wallet">Digital Wallet</option>
+              <option value="upi">UPI</option>
+            </select>
+            <input id="pay-amount" type="number" min="50" step="10" value="200" />
+          </div>
+          <div class="badge">SSL Secured</div>
+          <div style="height:10px"></div>
+          <button class="btn" onclick="fakePay()">Proceed to Deposit</button>
+          <p class="note">Replace <code>fakePay()</code> with your real payment integration (e.g., Stripe, Khalti, eSewa, Razorpay).</p>
+        </div>
+        <div class="card">
+          <h3>Upload Proof / Reference</h3>
+          <input id="pay-proof" type="file" accept="image/*,application/pdf" />
+          <button class="btn" style="margin-top:10px" onclick="uploadProof()">Upload</button>
+          <p class="note">For bank/UPI, upload transaction screenshot or PDF receipt.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>Policy & FAQ</h2>
+      <div class="grid">
+        <div class="card"><h3>Revisions</h3><p>Each tier includes revisions (Starter: 1, Growth: 3, Pro: unlimited within scope). Extra revisions billed hourly.</p></div>
+        <div class="card"><h3>Refunds</h3><p>100% refundable before design handoff begins; after that, proportional to work completed.</p></div>
+        <div class="card"><h3>Ownership</h3><p>After full payment, you own the deliverables. We may showcase work in our portfolio unless you request otherwise.</p></div>
+        <div class="card"><h3>Support</h3><p>30‑day bug‑fix window. Optional maintenance plans available.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Chatbot: Zack Bot -->
+  <div id="chat" class="chatbox" aria-live="polite">
+    <header>
+      <div class="chat-header">
+        <div class="id"><div class="bot-avatar"></div><div><strong>Zack Bot</strong><div class="tiny">Customer Service</div></div></div>
+        <button class="btn secondary" onclick="toggleChat()">✕</button>
+      </div>
+    </header>
+    <div id="chatLog" class="chat-log"></div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Type your question…" onkeydown="if(event.key==='Enter'){sendMsg()}" />
+      <button class="btn" onclick="sendMsg()">Send</button>
+    </div>
+  </div>
+  <div class="chat-launcher">
+    <button class="btn" onclick="toggleChat()">💬 Chat with Zack Bot</button>
+  </div>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+      <div>© <span id="year"></span> NovaForge Studio • Blue Galaxy Theme</div>
+      <div class="tiny">Support: <a id="waLink" href="#">WhatsApp</a> • Email: hello@yourstudio.dev</div>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Config ----
+    const WHATSAPP_NUMBER_RAW = "9762881995"; // Provide full international format for best results (e.g., +977XXXXXXXXXX)
+    const WA_URL = `https://wa.me/${WHATSAPP_NUMBER_RAW.replace(/[^\d+]/g,'')}`;
+    document.getElementById('waLink').href = WA_URL;
+
+    // ---- Quick Quote Calculator ----
+    function calcQuote(){
+      const type = document.getElementById('qq-type').value;
+      const level = +document.getElementById('qq-level').value;
+      const weeks = Math.max(1, +document.getElementById('qq-time').value || 4);
+      const baseMap = {"Website":900, "Mobile App":1600, "Web App / SaaS":2200, "UI/UX Design Only":700};
+      const base = baseMap[type] || 1000;
+      const complexityMultiplier = 0.9 + level * 0.6; // 1.5, 2.1, 2.7
+      const rush = weeks < 4 ? 1.25 : 1.0;
+      const price = Math.round(base * complexityMultiplier * rush / 10) * 10;
+      document.getElementById('qq-price').textContent = `$${price.toLocaleString()}`;
+    }
+    calcQuote();
+
+    // ---- Order Form (demo) ----
+    function saveDraft(){
+      const data = Object.fromEntries(new FormData(document.getElementById('orderForm')).entries());
+      localStorage.setItem('orderDraft', JSON.stringify(data));
+      alert('Draft saved locally on this device.');
+    }
+    function submitOrder(e){
+      e.preventDefault();
+      const form = document.getElementById('orderForm');
+      const data = Object.fromEntries(new FormData(form).entries());
+      // TODO: Replace this with a real backend request (fetch to your API / email service)
+      console.log('ORDER_SUBMITTED', data);
+      alert('Thank you! Your order has been recorded (demo). We will contact you shortly.');
+      form.reset();
+    }
+
+    // ---- Deposit (demo) ----
+    function fakePay(){
+      const method = document.getElementById('pay-method').value;
+      const amount = +document.getElementById('pay-amount').value || 0;
+      alert(`Demo: Initiating ${method} deposit of $${amount}.\nIntegrate your gateway in fakePay().`);
+    }
+    function uploadProof(){
+      const file = document.getElementById('pay-proof').files[0];
+      if(!file){alert('Please choose a file first.');return}
+      alert('Demo: Proof uploaded. In production, send to your server or cloud storage.');
+    }
+
+    // ---- Zack Bot (policy‑aware demo) ----
+    const policyKB = [
+      {k:['refund','money back','cancel'], a:'Refunds: 100% before design starts. After design begins, refunds are prorated to work completed. Would you like me to share the refund request form?'},
+      {k:['revision','change','edit'], a:'Revisions: Starter 1, Growth 3, Pro unlimited within agreed scope. Extra revisions are billed hourly. Tell me what you want changed.'},
+      {k:['timeline','deadline','time','weeks','days'], a:'Typical timelines: Starter 1–2 weeks, Growth 3–6 weeks, Pro 6–12+ weeks depending on scope and feedback speed.'},
+      {k:['price','cost','budget','quote','how much'], a:'Pricing is based on scope and complexity. Use the Quick Quote above or tell me your budget and features.'},
+      {k:['privacy','nda','co
